@@ -1,0 +1,54 @@
+---
+- name: Get release timestamp
+  command: date +%Y%m%d%H%M%S
+  register: timestamp
+
+- name: Name release directory
+  command: echo "{{ releases_folder }}/{{ timestamp.stdout }}"
+  register: release_path
+
+- name: Clone repo in the current release
+  git:  repo="{{ github_repo}}"   
+        dest="{{ release_path.stdout }}"
+        version="{{ branch }}"
+        accept_hostkey=yes
+
+- name: Remove current folder if a directory
+  become: 'true'
+  become_method: 'sudo'
+  file:
+    state: absent
+    force: yes 
+    path: "{{ current_path }}"
+
+- name: Symlink current release
+  file:
+    state: link
+    path: "{{ current_path }}"
+    src: "{{ release_path.stdout }}"
+
+- name: Symlink sites/default/files
+  file:
+    state: link
+    path: "{{ current_path }}/sites/default/files"
+    src: "{{ sites_default_files }}"
+
+- name: Update settings.php
+  template:
+    src=templates/settings.php.j2
+    dest="{{ current_path }}/sites/default/settings.php"
+
+- name: Update permissions for settings.php
+  become: 'true'
+  become_method: 'sudo'
+  file:
+    path="{{ current_path }}/sites/default/settings.php"
+    mode=ugo-w
+
+- name: Cleanup releases
+  become: 'true'
+  become_method: 'sudo'
+  shell: ls -1dt {{ releases_folder }}/* | tail -n +{{ keep_releases | int + 1 }} | xargs rm -rf
+  when: keep_releases > 0
+  notify:
+    - reload nginx

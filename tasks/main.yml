@@ -1,0 +1,12 @@
+---
+- include: folders.yml
+
+- include: users.yml
+
+- include: nginx.yml
+
+- include: php-fpm.yml
+  when: env == 'production'
+
+- include: update_code.yml
+

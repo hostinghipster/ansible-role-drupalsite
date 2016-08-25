@@ -1,0 +1,34 @@
+---
+- name: Create php-fpm pool
+  become: 'true'
+  become_method: 'sudo'
+  template:
+    src=templates/pool.conf.j2
+    dest="/etc/php5/fpm/pool.d/{{ short_name }}"
+  tags:
+    - php 
+
+- name: Create upstart script
+  become: 'true'
+  become_method: 'sudo'
+  template:
+    src=templates/php5-fpm.j2
+    dest="/etc/init/{{ short_name }}.conf"
+  tags:
+    - php 
+
+- name: Create php5-fpm-checkconf file
+  become: 'true'
+  become_method: 'sudo'
+  template:
+    src=templates/php5-fpm-checkconf.j2
+    dest="/usr/lib/php5/php5-fpm-{{ short_name }}-checkconf"
+  tags:
+    - php 
+
+- name: Start php-fpm pool
+  become: 'true'        
+  become_method: 'sudo'
+  service: name={{short_name}} state=started
+  tags:
+    - php

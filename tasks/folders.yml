@@ -1,0 +1,31 @@
+---
+- name: Create shared folder
+  become: 'true'
+  become_method: 'sudo'
+  file:
+    path="{{ shared_path }}"
+    owner="{{ web_owner }}"
+    group="{{ web_owner }}"
+    state=directory
+    mode="g+w"
+    
+- name: Create releases folder
+  become: 'true'
+  become_method: 'sudo'
+  file:
+    path="{{ releases_folder }}"
+    owner="{{ web_owner }}"
+    group="{{ web_owner }}"
+    state=directory
+    recurse=yes
+    mode="g+w"
+
+- name: Change permissions for site_path
+  become: 'true'
+  become_method: 'sudo'
+  file:
+    path="{{ site_path }}"
+    state=directory
+    owner="{{ web_owner }}"
+    group="{{ web_owner }}"
+    mode="g+w"

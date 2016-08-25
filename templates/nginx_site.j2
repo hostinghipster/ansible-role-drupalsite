@@ -1,0 +1,64 @@
+{% if env == 'production' %}
+
+upstream phpcgi {
+    least_conn;
+    server unix:/var/run/php5-fpm-{{short_name}}.sock;
+    keepalive 5;
+}
+
+server {
+        listen 80;
+        server_name www.{{ site_name }} {{ site_name }};
+        return 301 https://$host$request_uri;
+}
+
+server {
+        listen 443 ssl;
+
+        ssl_certificate /etc/letsencrypt/live/{{site_name}}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{site_name}}/privkey.pem;
+
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_prefer_server_ciphers on;
+        ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+
+
+{% else %}
+
+server {
+        listen 80;
+
+{% endif %}
+
+        server_name www.{{ site_name }} {{ site_name }};
+        limit_conn arbeit 32;
+      
+        access_log /var/log/nginx/{{site_name}}_access.log;
+        error_log /var/log/nginx/{{site_name}}_error.log;
+
+        if ($bad_bot) {
+          return 444;
+        }
+
+        if ($bad_referer) {
+          return 444;
+        }
+
+        if ($not_allowed_method) {
+            return 405;
+        }
+
+        root {{ current_path }};
+        index index.php;
+
+        fastcgi_keep_conn on; 
+ 
+        include apps/drupal/drupal.conf;
+        include apps/drupal/drupal_cron_update.conf;
+        include apps/drupal/drupal_autocomplete.conf;
+ 
+        location '/.well-known/acme-challenge' {
+                default_type "text/plain";
+                root        /tmp/letsencrypt-auto;
+        }
+}

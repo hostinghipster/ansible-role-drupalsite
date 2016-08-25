@@ -1,0 +1,9 @@
+---
+
+site_path: "/var/www/drupal/{{site_name}}"
+current_path: "{{ site_path}}/current"
+shared_path: "{{ site_path}}/shared"
+releases_folder: "{{ site_path}}/releases"
+sites_default_files: "{{shared_path}}/sites/default/files"
+web_owner: www-data
+keep_releases: 2
