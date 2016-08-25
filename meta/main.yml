@@ -183,7 +183,7 @@ galaxy_info:
     - ubuntu
     - drupal
     - nginx
-    - php5-fpm
+    - php
 
 dependencies: []
   # List your role dependencies here, one per line.
