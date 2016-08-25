@@ -25,10 +25,3 @@
     dest="/usr/lib/php5/php5-fpm-{{ short_name }}-checkconf"
   tags:
     - php 
-
-- name: Start php-fpm pool
-  become: 'true'        
-  become_method: 'sudo'
-  service: name={{short_name}} state=started
-  tags:
-    - php

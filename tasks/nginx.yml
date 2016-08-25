@@ -1,5 +1,5 @@
 ---
-- name: Upload nginx template
+- name: Upload nginx site template
   become: 'true'
   become_method: 'sudo'
   template:

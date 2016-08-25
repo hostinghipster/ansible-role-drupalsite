@@ -3,3 +3,8 @@
   become: 'true'
   become_method: 'sudo'
   service: name=nginx state=reloaded
+
+- name: start php-fpm pool
+  become: 'true'        
+  become_method: 'sudo'
+  service: name={{short_name}} state=started
