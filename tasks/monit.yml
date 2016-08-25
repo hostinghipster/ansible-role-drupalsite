@@ -1,0 +1,7 @@
+---
+- name: load monit for {{short_name}}
+  template: src=templates/monit_php_fpm.j2.conf dest=/etc/monit/conf.d/monit_{{short_name}}.conf
+  become: 'true'
+  become_method: 'sudo'
+  notify:
+    - reload monit

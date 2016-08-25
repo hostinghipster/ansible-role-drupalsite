@@ -21,3 +21,6 @@
 
 - include: update_code.yml
   when: setup is defined or deploy is defined
+
+- include: monit.yml
+  when: monit is defined
