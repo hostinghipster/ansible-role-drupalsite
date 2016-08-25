@@ -32,6 +32,7 @@
     state: link
     path: "{{ current_path }}/sites/default/files"
     src: "{{ sites_default_files }}"
+  when: symlink_files is defined
 
 - name: Update settings.php
   template:
