@@ -4,8 +4,16 @@
 - include: users.yml
 
 - include: nginx.yml
+  become: 'true'
+  become_method: 'sudo'
+  tags:
+    - nginx
 
 - include: php-fpm.yml
+  become: 'true'
+  become_method: 'sudo'
+  tags:
+    - php
   when: env == 'production'
 
 - include: update_code.yml

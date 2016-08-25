@@ -2,5 +2,5 @@
 - name: Add users to www-data group
   become: 'true'
   become_method: 'sudo'
-  user: name={{item}} group=www-data
+  user: name="{{item}}" group=www-data
   with_items: users

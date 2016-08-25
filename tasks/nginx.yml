@@ -1,19 +1,11 @@
 ---
 - name: Upload nginx site template
-  become: 'true'
-  become_method: 'sudo'
   template:
     src=templates/nginx_site.j2
     dest="/etc/nginx/sites-available/{{ site_name }}"
-  tags:
-    - nginx
 
 - name: Symlink nginx config file
-  become: 'true'
-  become_method: 'sudo'
   file:
     src="/etc/nginx/sites-available/{{ site_name}}"
     dest="/etc/nginx/sites-enabled/{{ site_name}}"
     state=link
-  tags:
-    - nginx

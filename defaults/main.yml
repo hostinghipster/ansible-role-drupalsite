@@ -1,5 +1,4 @@
 ---
-
 site_path: "/var/www/drupal/{{site_name}}"
 current_path: "{{ site_path}}/current"
 shared_path: "{{ site_path}}/shared"
