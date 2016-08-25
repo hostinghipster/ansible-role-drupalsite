@@ -1,6 +1,6 @@
 ---
 site_path: "/var/www/drupal/{{site_name}}"
-current_path: "{{ site_path}}/current"
+current_path: "{{ site_path}}/git_deploy"
 shared_path: "{{ site_path}}/shared"
 releases_folder: "{{ site_path}}/releases"
 sites_default_files: "{{shared_path}}/sites/default/files"

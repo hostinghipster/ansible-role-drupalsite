@@ -12,4 +12,5 @@
 - name: Create php5-fpm-checkconf file
   template:
     src=templates/php5-fpm-checkconf.j2
+    mode="ugo+x"
     dest="/usr/lib/php5/php5-fpm-{{ short_name }}-checkconf"
